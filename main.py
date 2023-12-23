@@ -1,9 +1,11 @@
-import logging
 import asyncio
+import logging
 import multiprocessing
-from pynput.mouse import Listener
 from multiprocessing import Manager
+
+import cv2
 import websockets
+from pynput.mouse import Listener
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,8 +25,12 @@ def start_mouse_listener(mouse_position, mouse_position_lock, click_position, cl
         with click_position_lock:
             click_position['x'] = x
             click_position['y'] = y
-            if not pressed:
+            click_position['button'] = False
+            if pressed:
+                capture_image()
+                save_data_to_file(f"X={click_position['x']},Y={click_position['y']}")
                 click_position['button'] = True
+                logging.debug(f"####################################################################Button Clicked")
             else:
                 click_position['button'] = False
 
@@ -32,12 +38,43 @@ def start_mouse_listener(mouse_position, mouse_position_lock, click_position, cl
         listener.join()
 
 
+def capture_image():
+    # Open the webcam (0 represents the default camera)
+    cap = cv2.VideoCapture(0)
+
+    # Read a frame from the webcam
+    ret, frame = cap.read()
+
+    # Release the webcam
+    cap.release()
+
+    # Save the captured frame as an image
+    image_path = "captured_image.jpg"
+    cv2.imwrite(image_path, frame)
+
+    logging.debug(f"============================> Image captured and saved: {image_path}")
+
+
+def save_data_to_file(data):
+    # Specify the file path where you want to save the text file
+    file_path = "example.txt"
+
+    # Open the file in write mode and write the content
+    with open("capture_coordinates.txt", "w") as file:
+        file.write(data)
+
+    logging.debug(f"Text file saved successfully at: {file_path}")
+
+
 def start_websocket_server(mouse_position, mouse_position_lock, click_position, click_position_lock):
     async def run_websocket_server(websocket, path):
         while True:
             try:
                 with mouse_position_lock and click_position_lock:
-                    logging.debug(f"FOR test WEB_SOCKET: ({mouse_position['x']}, {mouse_position['y']})")
+                    logging.debug(f"????????????????????????????????????????????????????????????FOR test WEB_SOCKET: "
+                                  f"({mouse_position['x']}, "
+                                  f"{mouse_position['y']}, "
+                                  f"button: {click_position['button']})")
                     await websocket.send(
                         f"current x={mouse_position['x']}, "
                         f"current y={mouse_position['y']}, "
