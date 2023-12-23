@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+</head>
+<body>
+    <div id="output"></div>
+
+    <script>
+        const socket = new WebSocket("ws://localhost:8765");
+
+        socket.onopen = (event) => {
+            console.log("WebSocket connection opened:", event);
+        };
+
+        socket.onmessage = (event) => {
+            const message = event.data;
+            console.log("WebSocket message received:", message);
+
+            // Display the message in a div
+            document.getElementById("output").innerText = `Mouse Position: ${message}`;
+        };
+
+        socket.onclose = (event) => {
+            console.log("WebSocket connection closed:", event);
+        };
+
+        socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+    </script>
+</body>
+</html>
