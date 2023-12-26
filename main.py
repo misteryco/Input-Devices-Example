@@ -1,7 +1,9 @@
 import asyncio
 import logging
 import multiprocessing
+from datetime import datetime
 from multiprocessing import Manager
+import threading
 
 import cv2
 import websockets
@@ -18,8 +20,8 @@ def start_mouse_listener(mouse_position, mouse_position_lock, click_position, cl
         with mouse_position_lock:
             mouse_position['x'] = x
             mouse_position['y'] = y
-            # logging.debug(
-            # f"Mouse moved mouse_position: (X:{mouse_position['x']}, Y:{mouse_position['y']}) in process {process_id}")
+            logging.debug(
+                f"Mouse moved mouse_position: (X:{mouse_position['x']}, Y:{mouse_position['y']}) in process {process_id}")
 
     def on_click(x, y, button, pressed):
         with click_position_lock:
@@ -27,10 +29,10 @@ def start_mouse_listener(mouse_position, mouse_position_lock, click_position, cl
             click_position['y'] = y
             click_position['button'] = False
             if pressed:
-                capture_image()
-                save_data_to_file(f"X={click_position['x']},Y={click_position['y']}")
+                threading.Thread(target=asyncio.run, args=(capture_and_save_image(),)).start()
+                # save_data_to_file(f"X={click_position['x']},Y={click_position['y']}")
                 click_position['button'] = True
-                logging.debug(f"####################################################################Button Clicked")
+                logging.debug(f"#? ###Button Clicked")
             else:
                 click_position['button'] = False
 
@@ -38,32 +40,31 @@ def start_mouse_listener(mouse_position, mouse_position_lock, click_position, cl
         listener.join()
 
 
-def capture_image():
-    # Open the webcam (0 represents the default camera)
+async def capture_and_save_image():
+    # Use OpenCV to capture image from webcam
     cap = cv2.VideoCapture(0)
-
-    # Read a frame from the webcam
     ret, frame = cap.read()
 
-    # Release the webcam
+    timestamp = datetime.now().strftime("-%d%H%M%S")
+
+    # Save the captured image to disk
+    image_filename = f"captured_image{timestamp}.png"
+    cv2.imwrite(image_filename, frame)
+    print(f"Image saved as {image_filename}")
+
+    # Close the webcam capture
     cap.release()
 
-    # Save the captured frame as an image
-    image_path = "captured_image.jpg"
-    cv2.imwrite(image_path, frame)
 
-    logging.debug(f"============================> Image captured and saved: {image_path}")
-
-
-def save_data_to_file(data):
-    # Specify the file path where you want to save the text file
-    file_path = "example.txt"
-
-    # Open the file in write mode and write the content
-    with open("capture_coordinates.txt", "w") as file:
-        file.write(data)
-
-    logging.debug(f"Text file saved successfully at: {file_path}")
+# def save_data_to_file(data):
+#     # Specify the file path where you want to save the text file
+#     file_path = "example.txt"
+#
+#     # Open the file in write mode and write the content
+#     with open("capture_coordinates.txt", "w") as file:
+#         file.write(data)
+#
+#     logging.debug(f"Text file saved successfully at: {file_path}")
 
 
 def start_websocket_server(mouse_position, mouse_position_lock, click_position, click_position_lock):
