@@ -43,19 +43,14 @@ Install Python: [python.org](https://www.python.org/downloads/).
     pip install -r requirements.txt
     ```
 
-5. **Run the Application with local html client:**
-
+6. **Run data:**
+    - In terminal window run:
     ```bash
     python main.py
     ```
-    - open in browser the `index.html` from templates folder to see mouse coordinates stream.
-
-6. **Using Flask based websocket client:**
-    ```bash
-    python main.py
-    ```
-    - in separate terminal window, run:
+    - In separate terminal window, run:
    ```bash
-    python flask_websocket_client.py
+    python flask_app.py
     ```
-    - open http://127.0.0.1:5000 see mouse coordinates stream.
+    - open http://127.0.0.1:5000.
+    - Images are saved on disk in subfolder of the project named - "template".
