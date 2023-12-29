@@ -11,7 +11,7 @@ and streaming the real-time mouse position and click state to a WebSocket server
 
 Captured images are saved on the disk, and also as binary in the DB.
 
-The app use pynput library, on Linux it needs additional setting:
+The app use pynput library, on Linux it may needs additional installation and configuration:
 
       1. An X server must be running.
       2. The environment variable $DISPLAY must be set.
