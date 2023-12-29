@@ -4,9 +4,8 @@ Basic-Input-Devices an example
 
 # Obout the app:
 
-This app (main.py) streams mouse coordinates via websocket server, and on a mouse click capture image using main webcam
-of the
-machine.
+This app (main.py) collect and stream mouse coordinates via websocket server, and on a mouse click capture image using 
+the main webcam of the machine.
 
 1. Mouse coordinates stream is visible via index.html in 'templates' folder, or with provided "test_web_socket.py".
 
@@ -22,8 +21,9 @@ The app use pynput library, on Linux it needs additional setting:
 
 ## Prerequisites
 
-Install Python: [python.org](https://www.python.org/downloads/).
-For linux -> Install X server  :  [python.org](https://www.python.org/downloads/).
+Python: [python.org](https://www.python.org/downloads/).
+
+For linux -> X server  :  [x.org](https://www.x.org/wiki/).
 
 ## Setup
 
@@ -79,6 +79,7 @@ For linux -> Install X server  :  [python.org](https://www.python.org/downloads/
 
 - [Python](https://www.python.org/)
 - [Websockets](https://websockets.readthedocs.io/en/stable/index.html)
+- [sqlalchemy](https://docs.sqlalchemy.org/en/20/)
 - [OpenCV](https://docs.opencv.org/4.x/)
 - [pynput](https://pynput.readthedocs.io/en/latest/index.html)
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/)

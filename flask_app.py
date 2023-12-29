@@ -34,16 +34,14 @@ def read_from_database():
 
 @app.route('/download_image/<int:image_id>')
 def download_image(image_id):
-    # Retrieve the image data from the database based on the image ID
     image_entry = CapturedImage.query.get(image_id)
 
     if image_entry is None or image_entry.image_source is None:
         return "Image not found", 404
 
-    # Create a BytesIO object to hold the image data
+    # BytesIO object
     image_data = BytesIO(image_entry.image_source)
 
-    # Send the image file in the response
     return send_file(
         image_data,
         mimetype='image/png',
