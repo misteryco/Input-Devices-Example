@@ -2,15 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>SQLite Database Content</title>
 </head>
 <body>
-<h1>SQLite Database Contents</h1>
-<ul>
+<h1>Collected Data</h1>
+<style>
+    .cell-padding {
+        padding-left: 10px;
+    }
+</style>
+<table>
+    <thead>
+    <tr>
+        <th> ID</th>
+        <th> Image</th>
+        <th> Mouse X</th>
+        <th> Mouse Y</th>
+        <th> Timestamp</th>
+        <th> Download from db</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for row in rows %}
-    <li>{{ row['id'] }} || {{ row['path'] }} || {{ row['mouse_x'] }} || {{ row['mouse_y'] }}|| {{ row['timestamp'] }}
-    </li>
+    <tr>
+        <td class="cell-padding">{{ row['id'] }}</td>
+        <td class="cell-padding"><a href="{{ url_for('static', filename=row['path']) }}">{{ row['path'] }}</a></td>
+        <td class="cell-padding">{{ row['mouse_x'] }}</td>
+        <td class="cell-padding">{{ row['mouse_y'] }}</td>
+        <td class="cell-padding">{{ row['timestamp'] }}</td>
+        <td class="cell-padding"><a href="{{ url_for('download_image', image_id=row.id) }}">Download DB Image</a></td>
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>
 </body>
 </html>

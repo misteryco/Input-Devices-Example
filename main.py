@@ -9,17 +9,16 @@ import os
 import cv2
 import websockets
 from pynput.mouse import Listener
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBinary
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import pyautogui
 
 logging.basicConfig(level=logging.WARNING)
 
 Base = declarative_base()
 
-if not os.path.exists('images'):
-    os.makedirs('images')
+if not os.path.exists('static'):
+    os.makedirs('static')
     print(f"Folder created")
 
 
@@ -31,6 +30,7 @@ class CapturedImageModel(Base):
     mouse_x = Column(Integer, nullable=False)
     mouse_y = Column(Integer, nullable=False)
     timestamp = Column(DateTime, default=datetime.now)
+    image_source = Column(LargeBinary, nullable=True)
 
 
 def start_mouse_listener(mouse_position, mouse_position_lock, click_position, click_position_lock):
@@ -69,14 +69,20 @@ async def capture_and_save_image(session, click_coords):
     cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
 
+    _, buffer = cv2.imencode('.png', frame)
+    image_binary = buffer.tobytes()
+
     timestamp = datetime.now().strftime("-%d%H%M%S")
     f_name = f'captured_image{timestamp}.png'
-    image_filename = os.path.join(os.path.dirname(__file__), 'images', f_name)
+    image_filename = os.path.join(os.path.dirname(__file__), 'static', f_name)
     cv2.imwrite(image_filename, frame)
     print(f"Image saved as {f_name}")
 
     # Save the image path to the database
-    image_entry = CapturedImageModel(path=f_name, mouse_x=click_coords['x'], mouse_y=click_coords['y'])
+    image_entry = CapturedImageModel(path=f"{f_name}",
+                                     mouse_x=click_coords['x'],
+                                     mouse_y=click_coords['y'],
+                                     image_source=image_binary)
     session.add(image_entry)
     session.commit()
 
