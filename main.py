@@ -12,10 +12,15 @@ from pynput.mouse import Listener
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import pyautogui
 
 logging.basicConfig(level=logging.WARNING)
 
 Base = declarative_base()
+
+if not os.path.exists('images'):
+    os.makedirs('images')
+    print(f"Folder created")
 
 
 class CapturedImageModel(Base):
