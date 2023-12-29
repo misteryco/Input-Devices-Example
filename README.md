@@ -1,11 +1,11 @@
 # Input-Devices-Example
 
-Basic-Input-Devices an example
+Basic example demonstrating the usage of input devices with Python.
 
 # Obout the app:
 
-This app (main.py) collect and stream mouse coordinates via websocket server, and on a mouse click capture image using 
-the main webcam of the machine.
+This Python code sets up a system for capturing mouse movements and clicks, saving corresponding images and data to a SQLite database, 
+and streaming the real-time mouse position and click state to a WebSocket server, using multiprocessing for parallel execution and asyncio for asynchronous handling.
 
 1. Mouse coordinates stream is visible via index.html in 'templates' folder, or with provided "test_web_socket.py".
 
