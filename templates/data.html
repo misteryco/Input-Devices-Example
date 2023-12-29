@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SQLite Database Content</title>
+</head>
+<body>
+<h1>Collected Data</h1>
+<style>
+    .cell-padding {
+        padding-left: 10px;
+    }
+</style>
+<table>
+    <thead>
+    <tr>
+        <th> ID</th>
+        <th> Image</th>
+        <th> Mouse X</th>
+        <th> Mouse Y</th>
+        <th> Timestamp</th>
+        <th> Download from db</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+    <tr>
+        <td class="cell-padding">{{ row['id'] }}</td>
+        <td class="cell-padding"><a href="{{ url_for('static', filename=row['path']) }}">{{ row['path'] }}</a></td>
+        <td class="cell-padding">{{ row['mouse_x'] }}</td>
+        <td class="cell-padding">{{ row['mouse_y'] }}</td>
+        <td class="cell-padding">{{ row['timestamp'] }}</td>
+        <td class="cell-padding"><a href="{{ url_for('download_image', image_id=row.id) }}">Download DB Image</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
