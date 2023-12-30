@@ -18,7 +18,7 @@ The app use pynput library, on Linux it may needs additional installation and co
       3. usage of pyinput version 1.6.0 , this should be changed in requirements.txt before runnting 'pip install -r requirements.txt' command
 .      
 
-2. As secondary app there is a flask server (flask_app.py)that provide access to view the DB and to download images from
+2. As secondary app there is a flask server (flask_app.py) that provide access to view the content of DB and to download images from
    the DB.
 
 ## Prerequisites
@@ -62,11 +62,13 @@ For linux -> X server  :  [x.org](https://www.x.org/wiki/).
 
 4. **Install Dependencies:**
 
+   ** On linux chage  pyinput version to 1.6.0
     ```bash
     pip install -r requirements.txt
     ```
 
 6. **Run the project:**
+    - Every terminal should have activated Virtual Environment ( see above how to do it )
     - In terminal window run:
     ```bash
     python main.py
