@@ -2,7 +2,7 @@
 
 Basic example demonstrating the usage of input devices with Python.
 
-# Obout the app:
+# About the app:
 
 This Python code sets up a system for capturing mouse movements and clicks, saving corresponding images and data to a SQLite database, 
 and streaming the real-time mouse position and click state to a WebSocket server, using multiprocessing for parallel execution and asyncio for asynchronous handling.
@@ -15,6 +15,8 @@ The app use pynput library, on Linux it may needs additional installation and co
 
       1. An X server must be running.
       2. The environment variable $DISPLAY must be set.
+      3. usage of pyinput version 1.6.0 , this should be changed in requirements.txt before runnting 'pip install -r requirements.txt' command
+.      
 
 2. As secondary app there is a flask server (flask_app.py)that provide access to view the DB and to download images from
    the DB.
