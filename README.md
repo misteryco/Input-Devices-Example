@@ -15,7 +15,7 @@ The app use pynput library, on Linux it may needs additional installation and co
 
       1. An X server must be running.
       2. The environment variable $DISPLAY must be set.
-      3. usage of pyinput version 1.6.0 , this should be changed in requirements.txt before runnting 'pip install -r requirements.txt' command
+      3. usage of pynput version 1.6.0 , this should be changed in requirements.txt before runnting 'pip install -r requirements.txt' command
 .      
 
 2. As secondary app there is a flask server (flask_app.py) that provide access to view the content of DB and to download images from
@@ -62,7 +62,7 @@ For linux -> X server  :  [x.org](https://www.x.org/wiki/).
 
 4. **Install Dependencies:**
 
-   ** On linux chage  pyinput version to 1.6.0
+   ** On linux chage "pynput" version to 1.6.0 => pynput==1.6.0
     ```bash
     pip install -r requirements.txt
     ```
